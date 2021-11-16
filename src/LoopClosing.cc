@@ -68,7 +68,16 @@ void LoopClosing::Run()
         if(CheckNewKeyFrames())
         {
             // Detect loop candidates and check covisibility consistency
-            if(DetectLoop())
+            bool det_loop = DetectLoop();
+
+            static int count_loop_num = 0;
+            if(det_loop){
+                count_loop_num ++;
+                std::cout << "[LOOP] Canceled. Total Num: " << count_loop_num << std::endl;
+                det_loop = false;
+            }
+
+            if(det_loop)
             {
                // Compute similarity transformation [sR|t]
                // In the stereo/RGBD case s=1
